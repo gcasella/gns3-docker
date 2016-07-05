@@ -1,4 +1,4 @@
-FROM fedora:24
+FROM fedora:latest
 MAINTAINER Gian-Luca Casella <gcasella@casellanetworks.ca>
 ENV container docker
 ENV HOSTNAME gns3-docker
