@@ -1,4 +1,4 @@
-FROM fedora:24
+FROM fedora:latest
 MAINTAINER Gian-Luca Casella <gcasella@casellanetworks.ca>
 ENV container docker
 ENV HOSTNAME gns3-docker
@@ -52,7 +52,7 @@ COPY iourc /opt/gns3/.license/.iourc
 COPY hostid.sh /tmp/hostid.sh
 COPY gns3.sh /etc/init.d/gns3
 RUN setcap cap_net_raw,cap_net_admin+p /usr/bin/ping && chmod +x /usr/local/bin/vpcs && chown -R gns3:gns3 /opt/gns3/ && usermod -aG kvm gns3 && \
-	chmod +x /tmp/hostid.sh && /tmp/hostid.sh 030a035b && chmod +x /etc/init.d/gns3 && rm -rf /tmp/hostid.sh
+	chmod +x /tmp/hostid.sh && /tmp/hostid.sh 030a035b && chmod +x /etc/init.d/gns3 
 
 EXPOSE 3080
 
