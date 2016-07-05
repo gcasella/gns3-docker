@@ -1,4 +1,3 @@
-#GNS3 Server v1.5.0
 FROM fedora:24
 MAINTAINER Gian-Luca Casella <gcasella@casellanetworks.ca>
 ENV container docker
@@ -28,7 +27,6 @@ RUN dnf --setopt=deltarpm=false update -y && dnf --best --allowerasing --setopt=
 	wget \
 	qemu \
 	qemu-kvm \
-	docker \
 	libpcap libpcap-devel -y && \
 	dnf --setopt=deltarpm=false --best --allowerasing group install "C Development Tools and Libraries" -y && \
 	dnf --setopt=deltarpm=false --best --allowerasing group install "Development Tools" -y && \
@@ -52,12 +50,11 @@ COPY vpcs /usr/local/bin/vpcs
 COPY gns3_server.conf /opt/gns3/.config/gns3_server.conf
 COPY iourc /opt/gns3/.license/.iourc
 COPY hostid.sh /tmp/hostid.sh
+COPY gns3.sh /etc/init.d/gns3
 RUN setcap cap_net_raw,cap_net_admin+p /usr/bin/ping && chmod +x /usr/local/bin/vpcs && chown -R gns3:gns3 /opt/gns3/ && usermod -aG kvm gns3 && \
-	chmod +x /tmp/hostid.sh && /tmp/hostid.sh 030a035b && docker daemon --selinux-enabled=false -s overlay & 
+	chmod +x /tmp/hostid.sh && /tmp/hostid.sh 030a035b && chmod +x /etc/init.d/gns3 && rm -rf /tmp/hostid.sh
 
 EXPOSE 3080
 
 WORKDIR /opt/gns3/
-#Dockerfile TAG v1 -- gns3 server running on the foreground
-CMD ["/usr/bin/gns3server","--config=/opt/gns3/.config/gns3_server.conf","--pid=/opt/gns3/.pid/gns3.pid","--controller"]
-
+ENTRYPOINT ["/etc/init.d/gns3","start"]
