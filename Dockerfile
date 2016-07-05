@@ -8,6 +8,17 @@ RUN mkdir -p /opt/gns3/.log/ && mkdir /opt/gns3/.config/ && mkdir /opt/gns3/imag
 	mkdir /opt/gns3/configs/ && mkdir /opt/gns3/projects/ && mkdir /opt/gns3/.license/ && \
 	mkdir /opt/gns3/.pid/ && useradd -M -r -d /opt/gns3/ --user-group -s /sbin/nologin gns3 
 
+#Install Docker v1.10.3 binaries.
+
+ENV DOCKER_BUCKET get.docker.com
+ENV DOCKER_VERSION 1.10.3
+ENV DOCKER_SHA256 d0df512afa109006a450f41873634951e19ddabf8c7bd419caeb5a526032d86d
+
+RUN curl -fSL "https://${DOCKER_BUCKET}/builds/Linux/x86_64/docker-$DOCKER_VERSION" -o /usr/local/bin/docker \
+	&& echo "${DOCKER_SHA256}  /usr/local/bin/docker" | sha256sum -c - \
+	&& chmod +x /usr/local/bin/docker
+
+
 #Perform system update and install necessary packages for GNS3 Server 1.5+
 RUN dnf --setopt=deltarpm=false update -y && dnf --best --allowerasing --setopt=deltarpm=false install redhat-rpm-config \
 	openssl-libs.i686 \
@@ -55,6 +66,7 @@ RUN setcap cap_net_raw,cap_net_admin+p /usr/bin/ping && chmod +x /usr/local/bin/
 	chmod +x /tmp/hostid.sh && /tmp/hostid.sh 030a035b && chmod +x /etc/init.d/gns3 
 
 EXPOSE 3080
-
+VOLUME ["/lib/modules"]
 WORKDIR /opt/gns3/
+# Load script to start GNS3 and Docker Daemon at the same time
 ENTRYPOINT ["/etc/init.d/gns3","start"]
