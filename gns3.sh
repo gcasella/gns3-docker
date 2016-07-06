@@ -2,11 +2,15 @@
 
 case "$1" in
         start)
-                /usr/bin/gns3server --config /opt/gns3/.config/gns3_server.conf --log /opt/gns3/.log/gns3_server.log --pid /opt/gns3/.pid/gns3.pid --controller --daemon && \
-		/usr/local/bin/docker daemon --ip-forward=true --selinux-enabled=false -s overlay --dns=8.8.8.8 --dns=8.8.4.4 --log-driver=json-file > /var/log/docker.daemon; /bin/bash
+                /usr/bin/gns3server --config /opt/gns3/.config/gns3_server.conf --log /opt/gns3/.log/gns3_server.log --pid /opt/gns3/.pid/gns3.pid --controller --daemon; /bin/bash && \
+                ps -ef | awk '/docker daemon/&&!/grep/ {print "Docker Daemon is already running pid: "$2}' && \
+                /usr/local/bin/docker daemon --ip-forward=true --selinux-enabled=false -s overlay --dns=8.8.8.8 --dns=8.8.4.4 --log-driver=json-file >> /var/log/docker.daemon 2>&1 &
+                sleep 1
+                exit 0
                 ;;
         status)
-                ps -ef | awk '/gns3server/&&/python3/&&!/grep/ {print $9 " has been executed and is running on PID "$2}' || echo "GNS3 Server is not running. | Usage: $0 {start|status|restart}"
+                ps -ef | awk '/gns3server/&&/python3/&&!/grep/ {print "GNS3 is already running pid: "$2}' || echo "GNS3 Server is not running. | Usage: $0 {start|status|restart}"
+                ps -ef | awk '/docker daemon/&&!/grep/ {print "Docker Daemon is already running pid: "$2}' || echo "Docker Daemon is not running. | Usage: $0 {start|status|restart}"
                 exit 0
                 ;;
         restart)
