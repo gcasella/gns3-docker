@@ -66,7 +66,6 @@ RUN setcap cap_net_raw,cap_net_admin+p /usr/bin/ping && chmod +x /usr/local/bin/
 	chmod +x /tmp/hostid.sh && /tmp/hostid.sh 030a035b && chmod +x /etc/init.d/gns3 
 
 EXPOSE 3080
-VOLUME ["/lib/modules"]
 WORKDIR /opt/gns3/
 # Load script to start GNS3 and Docker Daemon at the same time
 ENTRYPOINT ["/etc/init.d/gns3","start"]
