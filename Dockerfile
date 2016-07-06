@@ -51,9 +51,11 @@ RUN dnf --setopt=deltarpm=false update -y && dnf --best --allowerasing --setopt=
 
 	pip3 install pip --upgrade && \
 	pip3 install setuptools --upgrade && \
-	pip3 install gns3-server --upgrade && \
-
 	dnf clean all
+	
+RUN	pip3 install gns3-server --upgrade
+
+
 
 
 #Create Service File to start GNS3 server on-boot
