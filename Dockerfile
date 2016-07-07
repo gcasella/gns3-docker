@@ -36,7 +36,7 @@ RUN dnf --setopt=deltarpm=false update -y && dnf --best --allowerasing --setopt=
 	net-tools \
 	iputils \
 	wget \
-	qemu \
+#	qemu \
 	openssh-server \
 #	qemu-kvm \
 	libpcap libpcap-devel -y && \
@@ -65,13 +65,14 @@ COPY gns3_server.conf /opt/gns3/.config/gns3_server.conf
 COPY iourc /opt/gns3/.license/.iourc
 COPY hostid.sh /tmp/hostid.sh
 COPY gns3.sh /etc/init.d/gns3
-RUN setcap cap_net_raw,cap_net_admin+p /usr/bin/ping && chmod +x /usr/local/bin/vpcs \
+RUN setcap cap_net_raw,cap_net_admin+p /usr/bin/ping && chmod +x /usr/local/bin/vpcs && \
 	chmod +x /tmp/hostid.sh && /tmp/hostid.sh 030a035b && chmod +x /etc/init.d/gns3 
 
 RUN echo 'root:gns3' | chpasswd
-#RUN sed -i 's/PermitRootLogin without-password/PermitRootLogin yes/' /etc/ssh/sshd_config
+RUN sed -i 's/PermitRootLogin without-password/PermitRootLogin yes/' /etc/ssh/sshd_config
+RUN sed 's@session\s*required\s*pam_loginuid.so@session optional pam_loginuid.so@g' -i /etc/pam.d/sshd
 
-EXPOSE 3080 20
+EXPOSE 3080 22
 WORKDIR /opt/gns3/
 # Load script to start GNS3 and Docker Daemon at the same time
 ENTRYPOINT ["/etc/init.d/gns3","start"]
