@@ -36,11 +36,12 @@ RUN dnf --setopt=deltarpm=false update -y && dnf --best --allowerasing --setopt=
 	net-tools \
 	iputils \
 	wget \
-#	qemu \
-	openssh-server \
 	qemu-kvm \
+	bison \
+	flex \
+	openssh-server \
 	libpcap libpcap-devel -y && \
-	dnf --setopt=deltarpm=false --best --allowerasing group install "C Development Tools and Libraries" -y && \
+#	dnf --setopt=deltarpm=false --best --allowerasing group install "C Development Tools and Libraries" -y && \
 	dnf --setopt=deltarpm=false --best --allowerasing group install "Development Tools" -y && \
 
 	#Download and install source code from github fror dynamips, ubridge, iouyap

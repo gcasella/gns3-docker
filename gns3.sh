@@ -2,9 +2,9 @@
 
 case "$1" in
         start)
-                /usr/bin/gns3server --config /opt/gns3/.config/gns3_server.conf --log /opt/gns3/.log/gns3_server.log --pid /opt/gns3/.pid/gns3.pid --controller --daemon && \
-                ps -ef | awk '/docker daemon/&&!/grep/ {print "Docker Daemon is already running pid: "$2}' && \
-		/usr/sbin/sshd-keygen && /usr/sbin/sshd && \
+                /usr/bin/gns3server --config /opt/gns3/.config/gns3_server.conf --log /opt/gns3/.log/gns3_server.log --pid /opt/gns3/.pid/gns3.pid --controller --daemon 
+                ps -ef | awk '/docker daemon/&&!/grep/ {print "Docker Daemon is already running pid: "$2}' 
+		/usr/sbin/sshd-keygen && /usr/sbin/sshd
                 /usr/local/bin/docker daemon --ip-forward=true --selinux-enabled=false -s overlay --dns=8.8.8.8 --dns=8.8.4.4 --log-driver=json-file >> /var/log/docker.daemon 2>&1 &
                 sleep 1; /bin/bash
                 ;;
