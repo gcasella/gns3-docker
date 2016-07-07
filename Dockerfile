@@ -38,7 +38,7 @@ RUN dnf --setopt=deltarpm=false update -y && dnf --best --allowerasing --setopt=
 	wget \
 #	qemu \
 	openssh-server \
-#	qemu-kvm \
+	qemu-kvm \
 	libpcap libpcap-devel -y && \
 	dnf --setopt=deltarpm=false --best --allowerasing group install "C Development Tools and Libraries" -y && \
 	dnf --setopt=deltarpm=false --best --allowerasing group install "Development Tools" -y && \
