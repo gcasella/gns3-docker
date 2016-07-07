@@ -6,7 +6,7 @@ ENV HOSTNAME gns3-docker
 #Create GNS3 Users for Service;
 RUN mkdir -p /opt/gns3/.log/ && mkdir /opt/gns3/.config/ && mkdir /opt/gns3/images/ && mkdir /opt/gns3/symbols/ && \
 	mkdir /opt/gns3/configs/ && mkdir /opt/gns3/projects/ && mkdir /opt/gns3/.license/ && \
-	mkdir /opt/gns3/.pid/ && useradd -M -r -d /opt/gns3/ --user-group -s /sbin/nologin gns3 
+	mkdir /opt/gns3/.pid/  
 
 #Install Docker v1.10.3 binaries.
 
@@ -37,7 +37,8 @@ RUN dnf --setopt=deltarpm=false update -y && dnf --best --allowerasing --setopt=
 	iputils \
 	wget \
 	qemu \
-	qemu-kvm \
+	openssh-server \
+#	qemu-kvm \
 	libpcap libpcap-devel -y && \
 	dnf --setopt=deltarpm=false --best --allowerasing group install "C Development Tools and Libraries" -y && \
 	dnf --setopt=deltarpm=false --best --allowerasing group install "Development Tools" -y && \
@@ -64,10 +65,13 @@ COPY gns3_server.conf /opt/gns3/.config/gns3_server.conf
 COPY iourc /opt/gns3/.license/.iourc
 COPY hostid.sh /tmp/hostid.sh
 COPY gns3.sh /etc/init.d/gns3
-RUN setcap cap_net_raw,cap_net_admin+p /usr/bin/ping && chmod +x /usr/local/bin/vpcs && chown -R gns3:gns3 /opt/gns3/ && usermod -aG kvm gns3 && \
+RUN setcap cap_net_raw,cap_net_admin+p /usr/bin/ping && chmod +x /usr/local/bin/vpcs \
 	chmod +x /tmp/hostid.sh && /tmp/hostid.sh 030a035b && chmod +x /etc/init.d/gns3 
 
-EXPOSE 3080
+RUN echo 'root:gns3' | chpasswd
+#RUN sed -i 's/PermitRootLogin without-password/PermitRootLogin yes/' /etc/ssh/sshd_config
+
+EXPOSE 3080 20
 WORKDIR /opt/gns3/
 # Load script to start GNS3 and Docker Daemon at the same time
 ENTRYPOINT ["/etc/init.d/gns3","start"]
