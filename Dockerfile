@@ -36,6 +36,7 @@ RUN dnf --setopt=deltarpm=false update -y && dnf --best --allowerasing --setopt=
 	net-tools \
 	iputils \
 	wget \
+	tar \
 	qemu-kvm \
 	bison \
 	flex \
