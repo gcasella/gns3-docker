@@ -38,6 +38,7 @@ RUN dnf --setopt=deltarpm=false update -y && dnf --best --allowerasing --setopt=
 	wget \
 	tar \
 	qemu-kvm \
+	qemu-img \
 	bison \
 	flex \
 	openssh-server \
