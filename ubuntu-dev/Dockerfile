@@ -13,7 +13,7 @@ COPY gns3-xenial-ppa.list /etc/apt/sources.list.d/
 RUN	apt-key adv --keyserver keyserver.ubuntu.com --recv-keys A2E3EF7B && dpkg --add-architecture i386
 RUN	apt-get update && apt-get upgrade -y
 
-RUN	apt-get install -y curl software-properties-common gns3-server vde2 uml-utilities open-vm-tools dynamips iouyap ubridge x11vnc xvfb gns3-iou 
+RUN	apt-get install -y curl docker.io docker software-properties-common gns3-server vde2 uml-utilities open-vm-tools dynamips iouyap ubridge x11vnc xvfb gns3-iou 
 RUN	apt-get install -y python3-pip python3-dev python3-setuptools python3-netifaces
 
 
