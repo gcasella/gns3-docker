@@ -23,13 +23,9 @@ To run this docker instance several types of commands can be used to run the doc
 The iterations of the commands below are only used if you wish to use it that way.
 
 To run the docker image as a standard image using your default docker0 bridge interface use the command;
-docker run --privileged --cap-add SYS_ADMIN -itd gcasella/gns3-docker:v1.5.1
+docker run --privileged --cap-add SYS_ADMIN -itd -v /lib/modules:/lib/modules gcasella/gns3-docker:v1.5.1 start
 
 If you want to use your own user defined network with a static IP Address you can use the following command;
-docker run --privileged --cap-add SYS_ADMIN --net=<net-name> --ip=<ip-addr> -itd gcasella/gns3-docker:v1.5.1
+docker run --privileged --cap-add SYS_ADMIN --net=<net-name> --ip=<ip-addr> -itd -v /lib/modules:/lib/modules gcasella/gns3-docker:v1.5.1 start
 
-Run Development
-
-To test the new features for the gcasella/gns3-docker:development branch use the following command;
-docker run --privileged --cap-add SYS_ADMIN -itd -v /lib/modules:/lib/modules gcasella/gns3-docker:development
 
