@@ -20,17 +20,6 @@ RUN	apt-get install -y python3-pip python3-dev python3-setuptools python3-netifa
 RUN	pip3 install pip --upgrade && \
 	pip3 install setuptools --upgrade
 	
-#Install Docker v1.10.3 binaries.
-
-ENV DOCKER_BUCKET get.docker.com
-ENV DOCKER_VERSION 1.10.3
-ENV DOCKER_SHA256 d0df512afa109006a450f41873634951e19ddabf8c7bd419caeb5a526032d86d
-
-RUN curl -fSL "https://${DOCKER_BUCKET}/builds/Linux/x86_64/docker-$DOCKER_VERSION" -o /usr/local/bin/docker \
-        && echo "${DOCKER_SHA256}  /usr/local/bin/docker" | sha256sum -c - \
-        && chmod +x /usr/local/bin/docker
-
-
 
 #Create Service File to start GNS3 server on-boot
 #COPY vpcs /usr/local/bin/vpcs
