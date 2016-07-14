@@ -78,4 +78,4 @@ RUN sed 's@session\s*required\s*pam_loginuid.so@session optional pam_loginuid.so
 EXPOSE 3080 22
 WORKDIR /opt/gns3/
 # Load script to start GNS3 and Docker Daemon at the same time
-ENTRYPOINT ["/etc/init.d/gns3","start"]
+ENTRYPOINT ["/etc/init.d/gns3"]
