@@ -2,21 +2,18 @@
 
 case "$1" in
         start)
-                if [ -f /opt/gns3/.pid/gns3.pid ]; then
-                  sleep 1
-                  echo "GNS3 Server .pid file already exists"
-                  ps -ef | awk '/gns3server/&&/python3/&&!/grep/ {print "GNS3 is already running pid: "$2}'
-                else
-                 /usr/bin/gns3server --config /opt/gns3/.config/gns3_server.conf --log /opt/gns3/.log/gns3_server.log --pid /opt/gns3/.pid/gns3.pid --controller --daemon
+ 		if [ -f /opt/gns3/.pid/gns3.pid ]; then
+		 rm -rf /opt/gns3/.pid/gns3.pid
+		fi
+		if [ -f /var/run/docker.pid ]; then
+		 rm -rf /var/run/docker.pid
                 fi
+		
+		ps -ef | awk '/gns3server/&&/python3/&&!/grep/ {print "GNS3 is already running pid: "$2}'
+                /usr/bin/gns3server --config /opt/gns3/.config/gns3_server.conf --log /opt/gns3/.log/gns3_server.log --pid /opt/gns3/.pid/gns3.pid --controller --daemon
 
-                if [ -f /var/run/docker.pid ]; then
-                  sleep 1
-                  echo "Docker Service .pid file already exists"
-                  ps -ef | awk '/docker daemon/&&!/grep/ {print "Docker Daemon is already running pid: "$2}'
-                else
-                 /usr/local/bin/docker daemon --ip-forward=true --selinux-enabled=false -s overlay --dns=8.8.8.8 --dns=8.8.4.4 --log-driver=json-file >> /var/log/docker.daemon 2>&1 &
-                fi
+                ps -ef | awk '/docker daemon/&&!/grep/ {print "Docker Daemon is already running pid: "$2}'
+                /usr/local/bin/docker daemon --ip-forward=true --selinux-enabled=false -s overlay --dns=8.8.8.8 --dns=8.8.4.4 --log-driver=json-file >> /var/log/docker.daemon 2>&1 &
 
                 /usr/sbin/sshd-keygen && /usr/sbin/sshd
                 sleep 1; /bin/bash
