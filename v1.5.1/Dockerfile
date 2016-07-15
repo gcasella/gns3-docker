@@ -50,6 +50,7 @@ RUN dnf --setopt=deltarpm=false update -y && dnf --best --allowerasing --setopt=
 	net-tools \
 	iputils \
 	wget \
+	x11vnc \
 	tar \
 	qemu-kvm \
 	qemu-img \
@@ -68,6 +69,7 @@ RUN dnf --setopt=deltarpm=false update -y && dnf --best --allowerasing --setopt=
         python3-devel \
 #        git \
         uuid \
+	x11vnc \
         uuid-devel \
         procps-ng \
         elfutils-libelf-devel \
