@@ -15,7 +15,6 @@ case "$1" in
                 ps -ef | awk '/docker daemon/&&!/grep/ {print "Docker Daemon is already running pid: "$2}'
                 /usr/local/bin/docker daemon --ip-forward=true --selinux-enabled=false -s overlay --dns=8.8.8.8 --dns=8.8.4.4 --log-driver=json-file >> /var/log/docker.daemon 2>&1 &
 
-                /usr/sbin/sshd-keygen && /usr/sbin/sshd
                 sleep 1; /bin/bash
                 ;;
         status)
